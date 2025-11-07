@@ -18,8 +18,13 @@
             --border-color: #EAEAEA;
             --card-bg: #F9F9F9;
             --accent-primary: #D97945;
-            --font-primary: 'Afacad', sans-serif;
-            --font-secondary-body: 'Lato', sans-serif;
+            --accent-purple: #B3A8C6; 
+        }
+
+        /* UPDATED: Custom Text Highlight Color */
+        ::selection {
+            background-color: var(--accent-purple);
+            color: black; /* Changed from white to black */
         }
 
         /* --- GENERAL SETUP & CURSOR FIX --- */
@@ -27,7 +32,7 @@
             margin: 0;
             background-color: var(--bg-main);
             color: var(--text-dark);
-            font-family: var(--font-secondary-body);
+            font-family: 'Lato', sans-serif;
             min-height: 100vh;
             overflow: hidden; 
             cursor: none;
@@ -82,19 +87,22 @@
             animation: hatchedCurtainDrop 1200ms ease-in-out forwards;
         }
         
-        .curtain-logo, .curtain-contact {
-            font-family: var(--font-primary);
+        .curtain-logo, .curtain-contact a {
+            font-family: 'Afacad', sans-serif;
             color: var(--bg-main);
             text-decoration: none;
-            opacity: 0;
-            animation: fadeInUp 800ms ease-out forwards 1000ms;
+        }
+        
+        .curtain-logo, .curtain-contact, .curtain-headline {
+             opacity: 0;
+             animation: fadeInUp 800ms ease-out forwards 1000ms;
         }
         
         .curtain-logo {
             grid-row: 1; grid-column: 1;
             font-weight: 900;
             font-size: 1.25rem;
-            text-transform: uppercase; /* Ensures it stays uppercase */
+            text-transform: uppercase;
         }
         
         .curtain-contact {
@@ -102,33 +110,39 @@
             justify-self: end;
         }
         .curtain-contact a {
-            font-family: var(--font-primary); font-weight: 700; font-size: 1.125rem;
-            text-transform: uppercase; text-decoration: none; color: var(--bg-main);
+            font-weight: 700; font-size: 1.125rem;
+            text-transform: uppercase;
             position: relative; padding-bottom: 0.5rem;
+            transition: color 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
         .curtain-contact a::after {
             content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px;
             background-color: var(--bg-main); transform: scaleX(0); transform-origin: left;
-            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
-        .curtain-contact a:hover::after { transform: scaleX(1); }
+        .curtain-contact a:hover {
+            color: var(--accent-purple);
+        }
+        .curtain-contact a:hover::after { 
+            transform: scaleX(1); 
+            background-color: var(--accent-purple);
+        }
 
         .curtain-headline {
             grid-row: 2; grid-column: 1 / -1;
             align-self: center;
             justify-self: center;
-            font-family: var(--font-primary);
-            font-weight: 400; 
-            font-size: 1.1rem;
+            font-family: 'Afacad', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
             text-align: center;
             white-space: nowrap;
             color: var(--bg-main);
-            opacity: 0;
-            animation: fadeInUp 800ms ease-out forwards 1200ms;
+            animation-delay: 1200ms;
         }
         @media (min-width: 768px) {
             .curtain-headline {
-                font-size: 1.25rem;
+                font-size: 0.9rem;
             }
         }
 
@@ -161,12 +175,8 @@
 
     <!-- This is the curtain that will stay on screen -->
     <div class="curtain-container">
-        <!-- UPDATED: Reverted to "HATCHED" -->
         <div class="curtain-logo">HATCHED</div>
-        
-        <!-- UPDATED: "Media" changed to "media" -->
         <div class="curtain-headline">Restrained media that drives results.</div>
-        
         <div class="curtain-contact">
             <a href="mailto:hello@hatched.media">CONTACT US</a>
         </div>
