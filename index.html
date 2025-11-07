@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hatched — Performance Media</title>
+
+    <!-- Google Fonts Import for Afacad -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Afacad:wght@400..900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-main: #FFFFFF;
+            --text-dark: #1E1E1E;
+            --text-muted: #5A5034;
+            --border-color: #EAEAEA;
+            --card-bg: #F9F9F9;
+            --accent-primary: #D97945;
+            --font-primary: 'Afacad', sans-serif;
+            --font-secondary-body: 'Lato', sans-serif;
+        }
+
+        /* --- GENERAL SETUP & CURSOR FIX --- */
+        body {
+            margin: 0;
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            font-family: var(--font-secondary-body);
+            min-height: 100vh;
+            overflow: hidden; 
+            cursor: none;
+        }
+        a {
+            cursor: none;
+        }
+        
+        /* --- EGG CURSOR (SHATTER VERSION) --- */
+        .custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 22px;
+            height: 22px;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease-out;
+        }
+        .custom-cursor svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+            overflow: visible;
+        }
+
+        .shard {
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .custom-cursor.clicked .shard { opacity: 0; }
+        .custom-cursor.clicked .shard-1 { transform: translate(-25px, -40px) rotate(-35deg); }
+        .custom-cursor.clicked .shard-2 { transform: translate(30px, -35px) rotate(30deg); }
+        .custom-cursor.clicked .shard-3 { transform: translate(40px, 10px) rotate(50deg); }
+        .custom-cursor.clicked .shard-4 { transform: translate(15px, 45px) rotate(70deg); }
+        .custom-cursor.clicked .shard-5 { transform: translate(-20px, 40px) rotate(-60deg); }
+        .custom-cursor.clicked .shard-6 { transform: translate(-40px, 5px) rotate(-80deg); }
+        .custom-cursor.clicked .shard-7 { transform: translate(0px, -5px); }
+
+
+        /* --- PERMANENT CURTAIN LAYOUT --- */
+        .curtain-container {
+            position: fixed; inset: 0; z-index: 50;
+            box-sizing: border-box;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            grid-template-columns: 1fr 1fr;
+            padding: 2.5rem;
+            background-color: var(--accent-primary);
+            transform-origin: top;
+            animation: hatchedCurtainDrop 1200ms ease-in-out forwards;
+        }
+        
+        .curtain-logo, .curtain-contact {
+            font-family: var(--font-primary);
+            color: var(--bg-main);
+            text-decoration: none;
+            opacity: 0;
+            animation: fadeInUp 800ms ease-out forwards 1000ms;
+        }
+        
+        .curtain-logo {
+            grid-row: 1; grid-column: 1;
+            font-weight: 900;
+            font-size: 1.25rem;
+            text-transform: uppercase; /* Ensures it stays uppercase */
+        }
+        
+        .curtain-contact {
+            grid-row: 3; grid-column: 2;
+            justify-self: end;
+        }
+        .curtain-contact a {
+            font-family: var(--font-primary); font-weight: 700; font-size: 1.125rem;
+            text-transform: uppercase; text-decoration: none; color: var(--bg-main);
+            position: relative; padding-bottom: 0.5rem;
+        }
+        .curtain-contact a::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px;
+            background-color: var(--bg-main); transform: scaleX(0); transform-origin: left;
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .curtain-contact a:hover::after { transform: scaleX(1); }
+
+        .curtain-headline {
+            grid-row: 2; grid-column: 1 / -1;
+            align-self: center;
+            justify-self: center;
+            font-family: var(--font-primary);
+            font-weight: 400; 
+            font-size: 1.1rem;
+            text-align: center;
+            white-space: nowrap;
+            color: var(--bg-main);
+            opacity: 0;
+            animation: fadeInUp 800ms ease-out forwards 1200ms;
+        }
+        @media (min-width: 768px) {
+            .curtain-headline {
+                font-size: 1.25rem;
+            }
+        }
+
+        /* --- KEYFRAMES --- */
+        @keyframes hatchedCurtainDrop { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="custom-cursor">
+        <svg viewBox="-50 -50 200 225" fill="white" xmlns="http://www.w3.org/2000/svg">
+            <g class="shards">
+                <path class="shard shard-1" stroke="white" stroke-width="2" d="M50 0C63.2 0 74.3 9.4 83.1 25.1L50 35.8V0Z"/>
+                <path class="shard shard-2" stroke="white" stroke-width="2" d="M83.1 25.1C94.4 46.1 100 60.1 100 75L50 75L50 35.8L83.1 25.1Z"/>
+                <path class="shard shard-3" stroke="white" stroke-width="2" d="M100 75C100 90.5 94.6 102.6 84.4 112.5L50 75H100Z"/>
+                <path class="shard shard-4" stroke="white" stroke-width="2" d="M84.4 112.5C74.6 122.1 63 125 50 125V75L84.4 112.5Z"/>
+                <path class="shard shard-5" stroke="white" stroke-width="2" d="M50 125C37 125 25.4 122.1 15.6 112.5L50 75V125Z"/>
+                <path class="shard shard-6" stroke="white" stroke-width="2" d="M15.6 112.5C5.4 102.6 0 90.5 0 75L50 75L15.6 112.5Z"/>
+                <path class="shard shard-7" stroke="white" stroke-width="2" d="M0 75C0 60.1 5.6 46.1 16.9 25.1L50 35.8L50 75H0Z"/>
+                <path class="shard shard-1" stroke="white" stroke-width="2" d="M16.9 25.1C25.7 9.4 36.8 0 50 0V35.8L16.9 25.1Z"/>
+            </g>
+        </svg>
+    </div>
+
+    <!-- This is the curtain that will stay on screen -->
+    <div class="curtain-container">
+        <!-- UPDATED: Reverted to "HATCHED" -->
+        <div class="curtain-logo">HATCHED</div>
+        
+        <!-- UPDATED: "Media" changed to "media" -->
+        <div class="curtain-headline">Restrained media that drives results.</div>
+        
+        <div class="curtain-contact">
+            <a href="mailto:hello@hatched.media">CONTACT US</a>
+        </div>
+    </div>
+    
+    <script>
+        const cursor = document.querySelector('.custom-cursor');
+        
+        window.addEventListener('mousemove', (e) => {
+            const { clientX, clientY } = e;
+            requestAnimationFrame(() => {
+                cursor.style.transform = `translate(${clientX}px, ${clientY}px) translate(-50%, -50%)`;
+            });
+        });
+
+        window.addEventListener('mousedown', () => {
+            cursor.classList.add('clicked');
+        });
+
+        window.addEventListener('mouseup', () => {
+            cursor.classList.remove('clicked');
+        });
+    </script>
+
+</body>
+</html>
